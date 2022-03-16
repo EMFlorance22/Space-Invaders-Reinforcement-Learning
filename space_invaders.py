@@ -28,7 +28,6 @@ def pre_process(obs_stack, m):
 
 # go through the list of frames and take the max for any two consecutive frames of the frame being encoded and the previous frame
     max_obs = []
-    counter = 0
     for idx in range(0, len(obs_stack) + 1):
         if idx > 0:
             max_obs.append(np.max(all_obs[idx, ...], all_obs[idx - 1, ...]))
@@ -44,10 +43,17 @@ def pre_process(obs_stack, m):
 
     # Stack the most recent m frames as the input to the Q function
 
-    #for i in range(m,len(obs_stack)+1):
-        #return None
+    for i in range(m,len(obs_stack)+1):
+        idx = i
+        z_i = []
+        while idx >= i - m:
+            z_i.append(y_obs[idx])
+            idx -= 1
 
-pre_process(obs_list, 4)   
+        z_obs.append(z_i)
+
+
+## pre_process(obs_list, 4)   --> Tests the pre-process function
 
     
 
