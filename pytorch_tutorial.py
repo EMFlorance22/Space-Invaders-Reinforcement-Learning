@@ -43,8 +43,8 @@ class Net(nn.Module):
         x = self.fc3(x)
         return x
 
-
-net = Net()
+def create_deepq_cnn(weights):
+    net = Net()
 
 # We use a Classification Cross-Entropy Loss Function and SGD with momentum
 import torch.optim as optim

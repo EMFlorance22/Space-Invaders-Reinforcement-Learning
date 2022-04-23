@@ -52,6 +52,20 @@ def pre_process(obs_stack, m):
 
         z_obs.append(z_i)
 
+class MemoryReplay():
+    def __init__(self, experience_set, memory_length):
+        self.experience_data = experience_set
+        self.memory_length = memory_length
+
+    def set_replay(self):
+        # Adds an experience tuple to the memory replay up to a maximum of memory_length
+        return None 
+
+    def get_replay(self, m):
+        # Randomly samples m experience tuples from the memory replay
+        return None
+
+
 
 ## pre_process(obs_list, 4)   --> Tests the pre-process function
 
