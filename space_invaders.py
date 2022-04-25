@@ -5,6 +5,8 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 
+import random
+
 env = retro.make(game='SpaceInvaders-Atari2600')
 
 obs = env.reset()
@@ -57,15 +59,18 @@ class MemoryReplay():
         self.experience_data = experience_set
         self.memory_length = memory_length
 
-    def set_replay(self):
+    def set_replay(self, exp):
         # Adds an experience tuple to the memory replay up to a maximum of memory_length
+        self.add(exp)
         return None 
 
     def get_replay(self, m):
         # Randomly samples m experience tuples from the memory replay
-        return None
+        random_tups = random.choices(self, k = m)
+        
+        replay_array = np.array(random_tups) # Converts the randomly sampled tuples into a numpy array to be inputs to the Q NN
 
-
+        return replay_array     
 
 ## pre_process(obs_list, 4)   --> Tests the pre-process function
 

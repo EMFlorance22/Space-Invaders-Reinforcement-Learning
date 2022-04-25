@@ -1,52 +1,34 @@
 import torch
-import torchvision # We get the data from torchvision and transform it into a tensor
-import torchvision.transforms as transforms
-
-transform = transforms.Compose(
-[transforms.ToTensor(),
-transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]) # We transform whatever image data we want into a normalized Tensor
-
-batch_size = 4
-
-trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
-                                        download=True, transform=transform) # Import the CIFAR10 data and transform it
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                          shuffle=True, num_workers=2) # Load the training data using torch's DataLoader
-testset = torchvision.datasets.CIFAR10(root='./data', train=False,
-                                       download=True, transform=transform) # Import the testing data and transform it
-testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
-                                         shuffle=False, num_workers=2)
-
-classes = ('plane', 'car', 'bird', 'cat',
-           'deer', 'dog', 'frog', 'horse', 'ship', 'truck') # We have a tuple of the image classes the Classifier will use
-
 import torch.nn as nn # This allows us to create a neural network in pytorch
 import torch.nn.functional as F
 
 
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self, m): # Define weights, inputs, and outputs to the neural network?
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
-
+        self.conv1 = nn.Conv2d(84, 84, m) # First hidden convolution layer
+        self.conv2 = nn.Conv2d(84, 84, m) # Second hidden convolution layer
+        self.conv3 = nn.Conv2d(84, 84, m) # Third hidden convolution layer
+        self.fcl1 = nn.Linear() # First fully connected/linear layer
+        self.fcl2 = nn.Linear() # Second fully connected/linear layer --> Output layer
+        
     def forward(self, x): # Function that allows us to propagate forward in the NN
-        x = self.pool(F.relu(self.conv1(x)))
+        """x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+        x = self.fc3(x)"""
+        return None
 
-def create_deepq_cnn(weights):
-    net = Net()
+def create_deepq_cnn():
+    net = Net(4)
+
+
 
 # We use a Classification Cross-Entropy Loss Function and SGD with momentum
+
+""" 
 import torch.optim as optim
 
 criterion = nn.CrossEntropyLoss() # Define the loss function for the neural network
@@ -111,3 +93,4 @@ images, labels = dataiter.next()
 imshow(torchvision.utils.make_grid(images))
 # print labels
 print(' '.join(f'{classes[labels[j]]:5s}' for j in range(batch_size)))
+"""
