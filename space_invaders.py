@@ -28,31 +28,27 @@ def pre_process(obs_stack, m):
     y_obs = []
     z_obs = []
 
-# go through the list of frames and take the max for any two consecutive frames of the frame being encoded and the previous frame
+    # go through the list of frames and take the max for any two consecutive frames of the frame being encoded and the previous frame
     max_obs = []
-    for idx in range(0, len(obs_stack) + 1):
+    for idx in range(len(obs_stack)):
         if idx > 0:
-            max_obs.append(np.max(all_obs[idx, ...], all_obs[idx - 1, ...]))
+            max_obs.append(np.maximum(all_obs[idx, ...], all_obs[idx - 1, ...])) # Finds the maximum of all three color channels between the two frames (color channels are in first dimension)
         else:
             max_obs.append(all_obs[idx])
 
     # Extract the Y channel and resize the frames to 84x84
-    for i in range(0, len(obs_stack) + 1):
-        b, g, r = cv2.split(max_obs[i])
+    for i in range(len(obs_stack)):
+        b, g, r = cv2.split(all_obs[i])
         luminance = 0.2126*r + 0.7152*g + 0.0722*b
         resized_frame = cv2.resize(luminance, dsize = (84, 84))
         y_obs.append(resized_frame)
 
     # Stack the most recent m frames as the input to the Q function
 
-    for i in range(m,len(obs_stack)+1):
-        idx = i
-        z_i = []
-        while idx >= i - m:
-            z_i.append(y_obs[idx])
-            idx -= 1
+    for i in range(len(obs_stack) - m, len(obs_stack)):
+        z_obs.append(y_obs[i])
 
-        z_obs.append(z_i)
+    return z_obs
 
 class MemoryReplay():
     def __init__(self, experience_set, memory_length):
@@ -72,10 +68,17 @@ class MemoryReplay():
 
         return replay_array     
 
-## pre_process(obs_list, 4)   --> Tests the pre-process function
+q_inputs = pre_process(obs_list, 4)   
 
     
-
+"""# go through the list of frames and take the max for any two consecutive frames of the frame being encoded and the previous frame
+    max_obs = []
+    for idx in range(len(obs_stack)):
+        if idx > 0:
+            max_obs.append(np.maximum(all_obs[idx, ...], all_obs[idx - 1, ...]))
+        else:
+            max_obs.append(all_obs[idx])
+"""
 
     
 

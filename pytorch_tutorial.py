@@ -20,7 +20,6 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.fc3(x)"""
         return None
-
 def create_deepq_cnn():
     net = Net(4)
 
